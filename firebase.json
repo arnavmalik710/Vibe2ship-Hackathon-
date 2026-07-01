@@ -1,0 +1,85 @@
+{
+    "entities": {
+      "User": {
+        "title": "User",
+        "description": "Information about a user profile and leaderboard status",
+        "type": "object",
+        "properties": {
+          "uid": { "type": "string", "description": "The unique user ID" },
+          "displayName": { "type": "string", "description": "Display name of the user" },
+          "email": { "type": "string", "description": "Email address of the user" },
+          "points": { "type": "number", "description": "Leaderboard points" },
+          "badges": { "type": "array", "description": "Badges earned by the user" },
+          "reportsCount": { "type": "number", "description": "Number of issues reported by this user" },
+          "verificationsCount": { "type": "number", "description": "Number of verifications done by this user" },
+          "joinedAt": { "type": "string", "description": "ISO timestamp when the user joined" }
+        },
+        "required": ["uid", "displayName", "email", "points", "badges", "reportsCount", "verificationsCount", "joinedAt"]
+      },
+      "Issue": {
+        "title": "Issue",
+        "description": "A citizen-reported ward issue",
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string" },
+          "severity": { "type": "number" },
+          "status": { "type": "string", "enum": ["reported", "verified", "inProgress", "resolved"] },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": { "type": "number" },
+              "lng": { "type": "number" },
+              "address": { "type": "string" },
+              "zone": { "type": "string" }
+            },
+            "required": ["lat", "lng", "address", "zone"]
+          },
+          "photoURL": { "type": "string" },
+          "reportedBy": { "type": "string" },
+          "reporterName": { "type": "string" },
+          "reportedAt": { "type": "string" },
+          "votes": { "type": "number" },
+          "voters": { "type": "array" },
+          "department": { "type": "string" },
+          "confidenceScore": { "type": "number" },
+          "priorityScore": { "type": "number" },
+          "aiTags": { "type": "array" },
+          "resolvedAt": { "type": "string" }
+        },
+        "required": ["id", "title", "description", "category", "severity", "status", "location", "reportedBy", "reporterName", "reportedAt", "votes", "voters", "department"]
+      },
+      "Insight": {
+        "title": "Insight",
+        "description": "Predictive analysis for a zone",
+        "type": "object",
+        "properties": {
+          "zone": { "type": "string" },
+          "prediction": { "type": "string" },
+          "riskLevel": { "type": "string", "enum": ["low", "medium", "high"] },
+          "issueTypes": { "type": "array" },
+          "reasoning": { "type": "string" },
+          "recommendation": { "type": "string" },
+          "generatedAt": { "type": "string" }
+        },
+        "required": ["zone", "prediction", "riskLevel", "issueTypes", "reasoning", "recommendation", "generatedAt"]
+      }
+    },
+    "firestore": {
+      "/users/{userId}": {
+        "schema": "User",
+        "description": "User profiles"
+      },
+      "/issues/{issueId}": {
+        "schema": "Issue",
+        "description": "Citizen-reported issues"
+      },
+      "/insights/{insightId}": {
+        "schema": "Insight",
+        "description": "Predictive insights"
+      }
+    }
+  }
+  
